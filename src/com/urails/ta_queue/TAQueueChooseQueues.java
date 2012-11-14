@@ -122,7 +122,7 @@ public class TAQueueChooseQueues extends Activity implements ListAdapter {
 
 	@Override
 	public boolean isEnabled(int position) {
-		return _queues.get(position)._active;
+		return true;
 	}
 
 }

@@ -36,7 +36,6 @@ public class TAQueueMain extends Activity implements ListAdapter {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.schools);
 		_connector = new TaQueueConnectorHttp();
-		_queues = new ArrayList<QueueItem>();
 		_schoolnames = new ArrayList<SchoolNames>();
 		_schoolList = (ListView) findViewById(R.id.schools_listview);
 		try{
@@ -91,6 +90,7 @@ public class TAQueueMain extends Activity implements ListAdapter {
     
     private void processResult(int i)
     {
+    	_queues = new ArrayList<QueueItem>();
     	School tempSchool = new School();
     		tempSchool = _schools.get(i);
 			for(int j = 0; j<tempSchool.instructors.length; j++)
@@ -121,7 +121,9 @@ public class TAQueueMain extends Activity implements ListAdapter {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	super.onActivityResult(requestCode, resultCode, data);
     	switch (resultCode) {
-		
+    	case 1:
+    		_queues = null;
+    		break;
       default:
         break;	
 	}
