@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="35sp"
+    android:background="#323331">
+ 
+    	<ImageView
+        	android:id="@+id/schools_header"
+        	android:background="@drawable/ic_launcher"
+        	android:layout_width="wrap_content"
+        	android:contentDescription="@string/logo"
+        	android:gravity="left"
+        	android:layout_height="wrap_content" />
+ 		<TextView
+	            android:id="@+id/schools_title"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="left|center_vertical"
+	            android:paddingTop="5sp"
+	            android:textSize="16sp"
+	            android:textColor="#ffffff"
+	            android:text="@string/app_name" />
+ 		<LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="right|center_vertical"
+        >
+ 		<Button 
+ 		    android:id="@+id/schools_setting_button"
+ 		    android:background="#555555"
+ 		    android:gravity="right|center_vertical"
+ 		    android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:textSize="11sp"
+	        android:paddingLeft="5sp"
+	        android:paddingRight="5sp"
+	        android:text="@string/settings"
+	        android:textColor="#ffffff"
+	        />
+ 		</LinearLayout>
+ 	</LinearLayout>
+ 	<TextView
+	            android:id="@+id/schools_intro"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_horizontal"
+	            android:textSize="20sp"
+	            android:textColor="@color/white"
+	            android:text="@string/choose" />
+	<ListView 
+	    android:id="@+id/schools_listview"
+	    android:layout_width="fill_parent"
+	    android:layout_height="match_parent"
+	    android:background="@color/white">
+	    
+	</ListView>
+</LinearLayout>
