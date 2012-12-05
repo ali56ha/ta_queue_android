@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name="TAQueueChooseQueues" android:label="@string/title_choose_queues"></activity>
+        <activity android:name="TAQueueLogin" android:label="@string/title_login"></activity>
     </application>
 
 </manifest>

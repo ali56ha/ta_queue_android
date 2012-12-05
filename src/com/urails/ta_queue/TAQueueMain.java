@@ -30,6 +30,7 @@ public class TAQueueMain extends Activity implements ListAdapter {
 	private ArrayList<QueueItem> _queues;
 	private ArrayList<SchoolNames> _schoolnames;
 	private ListView _schoolList;
+	//private Button _settings;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class TAQueueMain extends Activity implements ListAdapter {
 		_connector = new TaQueueConnectorHttp();
 		_schoolnames = new ArrayList<SchoolNames>();
 		_schoolList = (ListView) findViewById(R.id.schools_listview);
+		//_settings = (Button) findViewById(R.id.main_setting_button);
 		try{
 			getSchoolsInfo();
 		}catch(Exception e){
@@ -52,10 +54,18 @@ public class TAQueueMain extends Activity implements ListAdapter {
 				processResult(position);
 			}
 		});
+		
+		
+//		_settings.setOnClickListener(new OnClickListener() {
+//		@Override
+//		public void onClick(View v) {
+//			//go to setting
+//		}});
+//	
     }
     
     public void getSchoolsInfo() throws JSONException {
-    	_connector.get("/schools", null, new JsonHttpResponseHandler() {
+    	_connector.get("/schools.json", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(JSONArray information) {
             	try{
@@ -68,10 +78,23 @@ public class TAQueueMain extends Activity implements ListAdapter {
             	{
             		System.out.println("ERROR "+e);
             	}
-            }            
+            }    
             @Override
-            public void onFailure(Throwable arg0, String arg1) {
-            	System.out.println("ERROR ");
+            public void onSuccess(JSONObject information) {
+            	try{
+            		Gson gson = new Gson();
+            		java.lang.reflect.Type listType = new TypeToken<ArrayList<School>>(){}.getType();
+            		_schools = (ArrayList<School>) gson.fromJson(information.toString(), listType);
+            		processSchools();
+            	}
+            	catch(Exception e)
+            	{
+            		System.out.println("ERROR "+e);
+            	}
+            }     
+            @Override
+            public void onFailure(Throwable arg0, JSONObject arg1) {
+            	System.out.println("ERROR " + arg1.toString());
             	super.onFailure(arg0, arg1);
             }
         });
@@ -96,14 +119,16 @@ public class TAQueueMain extends Activity implements ListAdapter {
 			for(int j = 0; j<tempSchool.instructors.length; j++)
 				for(int k = 0; k<tempSchool.instructors[j].queues.length; k++)
 				{
-					String url = "/"+tempSchool.abbreviation +"/"+
+					String url = "/schools/"+tempSchool.abbreviation +"/"+
 							tempSchool.instructors[j].username + "/" +
 							tempSchool.instructors[j].queues[k].class_number;
 					String title = tempSchool.instructors[j].queues[k].title;
+					
 					if(!tempSchool.instructors[j].queues[k].active)
 						title += " [Inactive] ";
 					if(tempSchool.instructors[j].queues[k].frozen)
 						title += " [frozen] ";
+					
 					_queues.add(new QueueItem(title,
 							tempSchool.instructors[j].name, url,
 							tempSchool.instructors[j].queues[k].active,
@@ -113,20 +138,21 @@ public class TAQueueMain extends Activity implements ListAdapter {
 			Intent intent = new Intent();
 			intent.setClass(TAQueueMain.this, TAQueueChooseQueues.class);
 			intent.putExtra(TAQueueChooseQueues.CHOOSE_QUEUE, _queues);
-			startActivityForResult(intent, (int)1);
-			
+			startActivityForResult(intent, (int)2);
+//			setResult((int)2, intent);
+//			finish();
     }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	super.onActivityResult(requestCode, resultCode, data);
     	switch (resultCode) {
-    	case 1:
-    		_queues = null;
-    		break;
-      default:
-        break;	
-	}
+    		case 2:
+    			_queues = null;
+    			break;
+    		default:
+    			break;	
+    	}
     }
     //ListAdapter Methods
 	@Override

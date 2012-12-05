@@ -4,6 +4,9 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_initial_set_up">TA Queue</string>
     <string name="title_choose_queues">ChooseQueuesActivity</string>
+    <string name="title_login">LoginActivity</string>
+    <string name="title_queue">Queue</string>
+    <string name="title_ta_queue">Queue</string>
 	<string name="login">Login</string>
 	<string name="logout">Logout</string>
 	<string name="ta_message">TA Message</string>

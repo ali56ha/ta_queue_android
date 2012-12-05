@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/lightbackground"
+    android:orientation="vertical" >
+   <RelativeLayout
+        android:id="@+id/loginovedrlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@drawable/lightbackground"
+        android:visibility="invisible" >
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true" />
+    </RelativeLayout>
+    <LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="35sp"
+    android:gravity="center_vertical"
+    android:background="@drawable/headfill">
+ 
+    	<ImageView
+        	android:id="@+id/schools_header"
+        	android:background="@drawable/icon"
+        	android:layout_width="wrap_content"
+        	android:contentDescription="@string/logo"
+        	android:gravity="left"
+        	android:layout_height="wrap_content" />
+ 		<TextView
+	            android:id="@+id/schools_title"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="left|center_vertical"
+	            android:paddingLeft="5sp"
+	            android:textSize="16sp"
+	            android:textStyle="bold"
+	            android:textColor="#ffffff"
+	            android:text="@string/app_name" />
+ 	</LinearLayout>
+    
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical" >
+	    <EditText
+	        android:id="@+id/login_username"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:inputType="text"
+	        android:hint="@string/username"
+	        android:layout_marginTop="16dp"
+	        android:layout_marginLeft="4dp"
+	        android:layout_marginRight="4dp"
+	        android:layout_marginBottom="4dp"
+	        android:ems="10" >
+	
+	        <requestFocus />
+	    </EditText>
+	
+	    <EditText
+	        android:id="@+id/login_location"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:inputType="text"
+	        android:hint="@string/location"
+	        android:layout_marginTop="4dp"
+	        android:layout_marginLeft="4dp"
+	        android:layout_marginRight="4dp"
+	        android:layout_marginBottom="16dp"
+	        android:ems="10" />
+	
+	    <EditText
+	        android:id="@+id/login_password"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="4dp"
+	        android:layout_marginLeft="4dp"
+	        android:layout_marginRight="4dp"
+	        android:layout_marginBottom="16dp"
+	        android:ems="10"
+	        android:visibility="gone"
+	        android:hint="@string/password"
+	        android:inputType="textPassword" />
+	    <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	
+	        <RadioGroup
+	            android:id="@+id/radio_group"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentLeft="true"
+	            android:layout_alignParentTop="true" 
+	            android:layout_marginLeft="4dp"
+	        	android:layout_marginRight="4dp"
+	            android:orientation="horizontal">
+	
+	            <RadioButton
+	                android:id="@+id/login_student_radio"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:checked="true"
+	                android:layout_marginLeft="4dp"
+	        		android:layout_marginRight="4dp"
+	        		android:textStyle="bold"
+	        		android:textColor="@color/black"
+	                android:text="@string/student" />
+	
+	            <RadioButton
+		            android:id="@+id/login_ta_radio"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_marginLeft="4dp"
+	        		android:layout_marginRight="4dp"
+	        		android:textStyle="bold"
+	        		android:textColor="@color/black"
+		            android:text="@string/ta" />
+	        </RadioGroup>
+	        
+	        <Button
+	            android:id="@+id/login_button"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_toRightOf="@id/radio_group"
+	            android:layout_centerVertical="true"
+	            android:layout_alignParentRight="true"
+	        	android:layout_marginLeft="4dp"
+	        	android:layout_marginRight="4dp"
+	        	android:textStyle="bold"
+	            android:text="@string/login" />
+	    </RelativeLayout>
+	</LinearLayout>
+</LinearLayout>

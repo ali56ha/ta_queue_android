@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:id="@+id/studentovedrlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@drawable/lightbackground"
+        android:visibility="invisible" >
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true" />
+    </RelativeLayout>
+    <LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="35sp"
+    android:gravity="center_vertical"
+    android:background="@drawable/headfill">
+    	<ImageView
+        	android:id="@+id/schools_header"
+        	android:background="@drawable/icon"
+        	android:layout_width="wrap_content"
+        	android:contentDescription="@string/logo"
+        	android:gravity="left"
+        	android:layout_height="wrap_content" />
+ 		<TextView
+	            android:id="@+id/schools_title"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="left|center_vertical"
+	            android:paddingLeft="5sp"
+	            android:textSize="16sp"
+	            android:textStyle="bold"
+	            android:textColor="#ffffff"
+	            android:text="@string/app_name" />
+ 		<LinearLayout
+	        android:layout_width="0dip"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:gravity="right|center_vertical"
+        	>
+	 		<Button 
+	 		    android:id="@+id/button_studnet_queue"
+	 		    android:background="@drawable/button1"
+	 		    android:layout_width="wrap_content"
+		        android:layout_height="25sp"
+		        android:textSize="11sp"
+		        android:textStyle="bold"
+		        android:paddingLeft="5sp"
+		        android:paddingRight="5sp"
+		        android:text="@string/settings"
+		        android:textColor="#000000"
+		        />
+ 		</LinearLayout>
+ 	</LinearLayout>
+ 	<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#555555">
+	 	<TextView
+	        android:id="@+id/studnet_ta_queue_title"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:textSize="20sp"
+	        android:textColor="@color/green" />
+	</LinearLayout>
+	<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#cccccc">
+		<TextView
+	        android:id="@+id/studnet_queue_title"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="15sp"
+	        android:textColor="@color/gray"/>
+		<ListView 
+		    android:id="@+id/student_queue_listview"
+		    android:layout_width="fill_parent"
+		    android:layout_height="match_parent"
+		    android:cacheColorHint="#00000000"
+		    android:background="@drawable/lightbackground">
+		</ListView>
+	</LinearLayout>
+	
+</LinearLayout>

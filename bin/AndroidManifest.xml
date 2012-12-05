@@ -9,9 +9,9 @@
 	<uses-permission
 	    android:name="android.permission.INTERNET"/>
     <application
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
-		android:theme="@android:style/Theme.NoTitleBar"        
+		android:theme="@android:style/Theme.NoTitleBar"
 		 >
         <activity
             
@@ -24,6 +24,9 @@
             </intent-filter>
         </activity>
         <activity android:name="TAQueueChooseQueues" android:label="@string/title_choose_queues"></activity>
+        <activity android:name="TAQueueLogin" android:label="@string/title_login"></activity>
+        <activity android:label="@string/title_queue" android:name="TAQueueInfo"></activity>
+        <activity android:name="TAQueueTaInfo" android:label="@string/title_ta_queue"></activity>
     </application>
 
 </manifest>
