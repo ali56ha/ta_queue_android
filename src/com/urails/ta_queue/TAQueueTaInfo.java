@@ -30,10 +30,12 @@ import android.widget.Toast;
 public class TAQueueTaInfo extends Activity implements ListAdapter{
 	public static final String USER = "USER";
 	public static final String QUEUE= "QUEUE";
+	public static final String QUEUES= "QUEUES";
 	private TaQueueConnectorHttp _connector;
 	private QueueInfo _queueinfo;
 	private TA _ta;
 	private QueueItem _queue;
+	private ArrayList<QueueItem> _queues;
 	RequestParams _params;
 	private int _duration;
 	private TextView _taTitle;
@@ -59,12 +61,14 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 	private int _studentwithta;
 	private boolean _foundstudentta;
 	private boolean _setIndex;
+	private Button _logout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ta_queue);
 		_ta = (TA)getIntent().getExtras().get(USER);
 		_queue = (QueueItem)getIntent().getExtras().get(QUEUE);
+		_queues = (ArrayList<QueueItem>)getIntent().getExtras().get(QUEUES);
 		_success = false;
 		_frozen = false;
 		_active = false;
@@ -83,10 +87,10 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 		_buttonforzen = (Button) findViewById(R.id.button_ta_queue_frozen);
 		_buttonactive = (Button) findViewById(R.id.button_ta_queue_active);
 		_progress = (RelativeLayout)findViewById(R.id.taovedrlay);
+		_logout = (Button) findViewById(R.id.button_ta_queue_logout);
 		_buttonactive.setText("Deactiv");
 		_buttonaccept.setText("Accept");
 		_buttonforzen.setText("Freeze");
-		_buttonputback.setText("PutBack");
 		_buttonactive.setVisibility(8);
 		_buttonforzen.setVisibility(8);
 		_buttonputback.setVisibility(8);
@@ -120,14 +124,50 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 		_buttonforzen.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				setFrozen();
+				//setFrozen();
 			}
 		});
 		_buttonactive.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				setActive();
+				//setActive();
 			}
+		});
+		_logout.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				setLogout();
+			}
+		});
+	}
+	
+	private void setLogout()
+	{
+		_progress.setVisibility(0);
+		_params = new RequestParams();
+		String url = "/tas/"+_ta.id;
+		_connector.setAuthdelete(_ta.id, _ta.token, url, _params, new JsonHttpResponseHandler(){
+			@Override
+			public void onSuccess(JSONObject result) {
+				super.onSuccess(result);
+				Intent intent = new Intent();
+				intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
+				intent.putExtra(TAQueueLogin.LOGIN, _queue);
+				intent.putExtra(TAQueueLogin.QUEUES, _queues);
+				setResult((int)1, intent);
+				finish();
+			}
+			@Override
+	        public void onFailure(Throwable arg0, JSONObject arg1) {
+	        	System.out.println("ERROR SETLOGOUT" + arg1.toString());
+	           	super.onFailure(arg0, arg1);
+	           	Intent intent = new Intent();
+				intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
+				intent.putExtra(TAQueueLogin.LOGIN, _queue);
+				intent.putExtra(TAQueueLogin.QUEUES, _queues);
+				setResult((int)2, intent);
+				finish();
+	        }
 		});
 	}
 	
@@ -138,7 +178,6 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 		if(_frozen)
 			bool = "false";
 		_params.put("queue[frozen]", bool);
-		System.out.println(_params.toString());
 		_connector.setAuth(_ta.id, _ta.token);
 		_connector.get("/queue", _params, new JsonHttpResponseHandler(){
 			@Override
@@ -149,10 +188,12 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 			}
 			@Override
 	        public void onFailure(Throwable arg0, JSONObject arg1) {
-	        	System.out.println("ERROR SetFrozen" + arg1.toString());
+	        	System.out.println("ERROR setLogout" + arg1.toString());
 	           	super.onFailure(arg0, arg1);
 	           	Intent intent = new Intent();
-				intent.setClass(TAQueueTaInfo.this, TAQueueMain.class);
+	           	intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
+				intent.putExtra(TAQueueLogin.LOGIN, _queue);
+				intent.putExtra(TAQueueLogin.QUEUES, _queues);
 				setResult((int)2, intent);
 				finish();
 	        }
@@ -165,10 +206,8 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 		String active = "true";
 		if(_active)
 			active = "false";
-		System.out.println("_ACTIVE IS :"+_active);
 		_params.put("queue[active]", active);
-		System.out.println(_params.toString());
-		_connector.addAuthHeader(_ta.id, _ta.token);
+		//_connector.addAuthHeader(_ta.id, _ta.token);
 		_connector.put("/queue", _params, new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(JSONObject result) {
@@ -183,7 +222,9 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 	           	super.onFailure(arg0, arg1);
 	    		_progress.setVisibility(8);
 	    		Intent intent = new Intent();
-				intent.setClass(TAQueueTaInfo.this, TAQueueMain.class);
+	    		intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
+				intent.putExtra(TAQueueLogin.LOGIN, _queue);
+				intent.putExtra(TAQueueLogin.QUEUES, _queues);
 				setResult((int)2, intent);
 				finish();
 	        }
@@ -194,7 +235,6 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 		_progress.setVisibility(0);
 		_params = new RequestParams();
 		String url = "/students/"+_studentIDs.get(_studentIndex)+"/ta_accept";
-		System.out.println("ACCEPT: " + url);
 		_connector.setAuthget(_ta.id, _ta.token, url, _params, new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(JSONObject result) {
@@ -211,7 +251,9 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 	           	_text = "ERROR Your login might be timeout. Please Login again";
 				Toast.makeText(_context, _text, _duration).show();
 				Intent intent = new Intent();
-				intent.setClass(TAQueueTaInfo.this, TAQueueMain.class);
+				intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
+				intent.putExtra(TAQueueLogin.LOGIN, _queue);
+				intent.putExtra(TAQueueLogin.QUEUES, _queues);
 				setResult((int)2, intent);
 				finish();
 	        }
@@ -240,7 +282,9 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 	    		_progress.setVisibility(8);
 				Toast.makeText(_context, _text, _duration).show();
 				Intent intent = new Intent();
-				intent.setClass(TAQueueTaInfo.this, TAQueueMain.class);
+				intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
+				intent.putExtra(TAQueueLogin.LOGIN, _queue);
+				intent.putExtra(TAQueueLogin.QUEUES, _queues);
 				setResult((int)2, intent);
 				finish();
 	        }
@@ -267,7 +311,9 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 				Toast.makeText(_context, _text, _duration).show();
 				_progress.setVisibility(8);
 				Intent intent = new Intent();
-				intent.setClass(TAQueueTaInfo.this, TAQueueMain.class);
+				intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
+				intent.putExtra(TAQueueLogin.LOGIN, _queue);
+				intent.putExtra(TAQueueLogin.QUEUES, _queues);
 				setResult((int)2, intent);
 				finish();
 	        }
@@ -321,7 +367,9 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 				Toast.makeText(_context, _text, _duration).show();
 				_progress.setVisibility(8);
 				Intent intent = new Intent();
-				intent.setClass(TAQueueTaInfo.this, TAQueueMain.class);
+				intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
+				intent.putExtra(TAQueueLogin.LOGIN, _queue);
+				intent.putExtra(TAQueueLogin.QUEUES, _queues);
 				setResult((int)2, intent);
 				finish();
 	        }
@@ -336,7 +384,9 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 			Toast.makeText(_context, _text, _duration).show();
 			_progress.setVisibility(8);
 			Intent intent = new Intent();
-			intent.setClass(TAQueueTaInfo.this, TAQueueMain.class);
+			intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
+			intent.putExtra(TAQueueLogin.LOGIN, _queue);
+			intent.putExtra(TAQueueLogin.QUEUES, _queues);
 			setResult((int)2, intent);
 			finish();
 		}
@@ -355,7 +405,6 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 				tamessage+=_queueinfo.tas[i].username;
 				if(i < tacount-1)
 					tamessage+=", ";
-				System.out.println("CHECK STUDENT IN TA");
 				if(_queueinfo.tas[i].id.equals(_ta.id))
 					if(_queueinfo.tas[i].student==null)
 						System.out.println("NULL");
@@ -461,7 +510,6 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 	//ListAdapter Methods
 	@Override
 	public int getCount() {
-		System.out.println("SIZE"+_students.size());
 		return _students.size();
 	}
 

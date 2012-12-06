@@ -148,7 +148,13 @@ public class TAQueueMain extends Activity implements ListAdapter {
     	super.onActivityResult(requestCode, resultCode, data);
     	switch (resultCode) {
     		case 2:
-    			_queues = null;
+    			_queues = new ArrayList<QueueItem>();
+    			_schoolnames = new ArrayList<SchoolNames>();
+    			_schools = null;
+    			try{
+    				getSchoolsInfo();
+    			}catch(Exception e)
+    			{}
     			break;
     		default:
     			break;	

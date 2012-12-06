@@ -16,8 +16,10 @@
 	<string name="deactivate">Deactivate</string>
 	<string name="freeze">Freeze</string>
 	<string name="done">Done</string>
-	<string name="enter_queue">Enter Queue</string>
-	<string name="exit_queue">Exit Queue</string>
+	<string name="enter_queue">Enter Q</string>
+	<string name="accept">Accept</string>
+	<string name="putback">PutBack</string>
+	<string name="exit_queue">Exit Q</string>
 	<string name="ta">TA</string>
 	<string name="student">Student</string>
 	<string name="username">Name</string>

@@ -107,13 +107,22 @@ public class TAQueueLogin extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (resultCode) {
-			case 2:
+			case 1:
 				Intent intent = new Intent();
     			intent.setClass(TAQueueLogin.this, TAQueueMain.class);
     			setResult((int)2, intent);
     			finish();
 	        break;
-
+			case 2:
+				_queues = (ArrayList<QueueItem>)getIntent().getExtras().get(QUEUES);
+				_queue = (QueueItem)getIntent().getExtras().get(LOGIN);
+				_username = null;
+				_password = null;
+				_location = null;
+				_usernameEdit.setText("");
+				_locationEdit.setText("");
+				_passwordEdit.setText("");
+				break;
 	      default:
 	        break;	
 		}
@@ -134,7 +143,6 @@ public class TAQueueLogin extends Activity {
 				@Override
 				public void onSuccess(JSONObject result) {
 					super.onSuccess(result);
-					System.out.println("TA RESULT IS"+result.toString());
 					try{
 						Gson gson = new Gson();
 	            		_ta = (TA) gson.fromJson(result.toString(), TA.class);
@@ -142,6 +150,7 @@ public class TAQueueLogin extends Activity {
 	        			intent.setClass(TAQueueLogin.this, TAQueueTaInfo.class);
 	        			intent.putExtra(TAQueueTaInfo.USER, _ta);
 	        			intent.putExtra(TAQueueTaInfo.QUEUE, _queue);		
+	        			intent.putExtra(TAQueueTaInfo.QUEUES, _queues);		
 	        			startActivityForResult(intent, (int)2);
 					}
 					catch(Exception e)
@@ -187,26 +196,21 @@ public class TAQueueLogin extends Activity {
 			_progress.setVisibility(0);
 			_params.put("student[username]", _username);
 			_params.put("student[location]", _location);
-//			System.out.println(_params.toString());
 			_connector.post(_url, _params, new JsonHttpResponseHandler(){
 				@Override
 				public void onSuccess(JSONObject result) {
 					super.onSuccess(result);
-//					System.out.println(result.toString());
 					try{
 						Gson gson = new Gson();
 	            		_student = (Student) gson.fromJson(result.toString(), Student.class);
 	            		_student.location = _location;
-	            		System.out.println("ID: " + _student.id);
-	            		System.out.println("TOCKET: " + _student.token);
 	            		_progress.setVisibility(8);
 	        			Intent intent = new Intent();
 	        			intent.setClass(TAQueueLogin.this, TAQueueInfo.class);
 	        			intent.putExtra(TAQueueInfo.USER, _student);
-	        			intent.putExtra(TAQueueInfo.QUEUE, _queue);
+	        			intent.putExtra(TAQueueInfo.QUEUE, _queue);	
+	        			intent.putExtra(TAQueueInfo.QUEUES, _queues);		
 	        			startActivityForResult(intent, (int)2);
-	        			//setResult((int)2, intent);
-						//finish();
 					}
 					catch(Exception e)
 					{
@@ -220,7 +224,11 @@ public class TAQueueLogin extends Activity {
 				@Override
 		        public void onFailure(Throwable arg0, JSONObject arg1) {
 		        	System.out.println("ERROR FAIL Student LOGIN" + arg1.toString());
+		        	Intent intent = new Intent();
 		           	super.onFailure(arg0, arg1);
+		           	intent.setClass(TAQueueLogin.this, TAQueueMain.class);
+        			setResult((int)2, intent);
+        			finish();
 		        }
 			});
 			_loginButton.setClickable(true);

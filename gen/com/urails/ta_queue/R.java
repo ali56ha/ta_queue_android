@@ -42,11 +42,13 @@ public final class R {
         public static final int whitebp1=0x7f020013;
     }
     public static final class id {
-        public static final int button_studnet_queue=0x7f080011;
-        public static final int button_ta_queue_accept=0x7f080019;
-        public static final int button_ta_queue_active=0x7f080017;
-        public static final int button_ta_queue_frozen=0x7f080016;
-        public static final int button_ta_queue_putback=0x7f080018;
+        public static final int button_studnet_logout=0x7f080011;
+        public static final int button_studnet_queue=0x7f080012;
+        public static final int button_ta_queue_accept=0x7f08001d;
+        public static final int button_ta_queue_active=0x7f080018;
+        public static final int button_ta_queue_frozen=0x7f080017;
+        public static final int button_ta_queue_logout=0x7f080019;
+        public static final int button_ta_queue_putback=0x7f08001c;
         public static final int login_button=0x7f080009;
         public static final int login_location=0x7f080004;
         public static final int login_password=0x7f080005;
@@ -57,21 +59,21 @@ public final class R {
         public static final int main_list_classinfo=0x7f08000c;
         public static final int main_list_classname=0x7f08000b;
         public static final int main_listview=0x7f08000a;
-        public static final int menu_settings=0x7f08001d;
+        public static final int menu_settings=0x7f08001f;
         public static final int radio_group=0x7f080006;
         public static final int schools_header=0x7f080001;
         public static final int schools_listview=0x7f08000e;
         public static final int schools_setting_button=0x7f08000d;
         public static final int schools_title=0x7f080002;
         public static final int single_item_text=0x7f08000f;
-        public static final int student_queue_listview=0x7f080014;
+        public static final int student_queue_listview=0x7f080015;
         public static final int studentovedrlay=0x7f080010;
-        public static final int studnet_queue_title=0x7f080013;
-        public static final int studnet_ta_queue_title=0x7f080012;
+        public static final int studnet_queue_title=0x7f080014;
+        public static final int studnet_ta_queue_title=0x7f080013;
         public static final int ta_queue_title=0x7f08001a;
-        public static final int ta_student_queue_listview=0x7f08001c;
+        public static final int ta_student_queue_listview=0x7f08001e;
         public static final int ta_studnet_queue_title=0x7f08001b;
-        public static final int taovedrlay=0x7f080015;
+        public static final int taovedrlay=0x7f080016;
     }
     public static final class layout {
         public static final int login=0x7f030000;
@@ -87,26 +89,28 @@ public final class R {
         public static final int activity_initial_set_up=0x7f070000;
     }
     public static final class string {
-        public static final int about=0x7f040019;
+        public static final int about=0x7f04001b;
+        public static final int accept=0x7f040011;
         public static final int activate=0x7f04000c;
         public static final int app_name=0x7f040000;
-        public static final int choose=0x7f04001b;
+        public static final int choose=0x7f04001d;
         public static final int deactivate=0x7f04000d;
         public static final int done=0x7f04000f;
         public static final int enter_queue=0x7f040010;
-        public static final int exit_queue=0x7f040011;
+        public static final int exit_queue=0x7f040013;
         public static final int freeze=0x7f04000e;
-        public static final int location=0x7f040015;
+        public static final int location=0x7f040017;
         public static final int login=0x7f040007;
-        public static final int logo=0x7f04001a;
+        public static final int logo=0x7f04001c;
         public static final int logout=0x7f040008;
         public static final int menu_settings=0x7f040001;
-        public static final int password=0x7f040016;
-        public static final int queues=0x7f040017;
-        public static final int settings=0x7f040018;
-        public static final int student=0x7f040013;
+        public static final int password=0x7f040018;
+        public static final int putback=0x7f040012;
+        public static final int queues=0x7f040019;
+        public static final int settings=0x7f04001a;
+        public static final int student=0x7f040015;
         public static final int students=0x7f04000b;
-        public static final int ta=0x7f040012;
+        public static final int ta=0x7f040014;
         public static final int ta_message=0x7f040009;
         public static final int tas=0x7f04000a;
         public static final int title_activity_initial_set_up=0x7f040002;
@@ -114,7 +118,7 @@ public final class R {
         public static final int title_login=0x7f040004;
         public static final int title_queue=0x7f040005;
         public static final int title_ta_queue=0x7f040006;
-        public static final int username=0x7f040014;
+        public static final int username=0x7f040016;
     }
     public static final class style {
         public static final int AppTheme=0x7f050000;

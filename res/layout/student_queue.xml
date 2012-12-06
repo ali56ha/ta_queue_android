@@ -45,6 +45,18 @@
 	        android:layout_weight="1"
 	        android:gravity="right|center_vertical"
         	>
+        	<Button 
+	 		    android:id="@+id/button_studnet_logout"
+	 		    android:background="@drawable/button1"
+	 		    android:layout_width="wrap_content"
+		        android:layout_height="25sp"
+		        android:textSize="8sp"
+		        android:textStyle="bold"
+		        android:paddingLeft="5sp"
+		        android:paddingRight="5sp"
+		        android:text="@string/logout"
+		        android:textColor="#000000"
+		        />
 	 		<Button 
 	 		    android:id="@+id/button_studnet_queue"
 	 		    android:background="@drawable/button1"
@@ -54,9 +66,10 @@
 		        android:textStyle="bold"
 		        android:paddingLeft="5sp"
 		        android:paddingRight="5sp"
-		        android:text="@string/settings"
+		        android:text="@string/enter_queue"
 		        android:textColor="#000000"
 		        />
+	 		
  		</LinearLayout>
  	</LinearLayout>
  	<LinearLayout
