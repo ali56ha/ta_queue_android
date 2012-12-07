@@ -153,8 +153,10 @@ public class TAQueueMain extends Activity implements ListAdapter {
     			_schools = null;
     			try{
     				getSchoolsInfo();
-    			}catch(Exception e)
-    			{}
+    				System.out.println("GET SCHOOl in main ");
+    			}catch(Exception e){
+    				System.out.println("ERROR TRY GET SCHOOl: " + e);
+    			}
     			break;
     		default:
     			break;	

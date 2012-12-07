@@ -5,6 +5,8 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 
 import org.apache.http.impl.auth.BasicScheme;
 
+import android.util.Base64;
+
 import com.loopj.android.http.*;
 
 public class TaQueueConnectorHttp {
@@ -39,14 +41,14 @@ public class TaQueueConnectorHttp {
 		client.setBasicAuth(id, token);
 	}
 	
-//	public void addAuthHeader(String id, String token)
-//	{
-//		String authenticationString = id + ":" + token;
-//		byte[] temp = authenticationString.getBytes();
-//		String encodedString = Base64.encodeToString(temp, 0);   
-//		
-//		client.addHeader("Authorization", "Basic " + encodedString);
-//	}
+	public void addAuthHeader(String id, String token)
+	{
+		String basicAuth = id + ":" + token;
+		//byte[] temp = authenticationString.getBytes();
+		//String encodedString = Base64.encodeToString(temp, 0);   
+		basicAuth = Base64.encodeToString(basicAuth.getBytes(), Base64.NO_WRAP);
+		client.addHeader("Authorization", "Basic " + basicAuth);
+	}
 	
 	public void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 	    client.get(getAbsoluteUrl(url), params, responseHandler);
@@ -57,6 +59,7 @@ public class TaQueueConnectorHttp {
 	}
 
 	public void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+		System.out.println("POST CALL");
 	    client.post(getAbsoluteUrl(url), params, responseHandler);
 	}
     

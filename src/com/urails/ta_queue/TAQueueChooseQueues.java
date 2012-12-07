@@ -48,6 +48,7 @@ public class TAQueueChooseQueues extends Activity implements ListAdapter {
     	switch (resultCode) {
     		case 2:
     			_queues = null;
+    			finish();
     			break;
     		default:
     			break;	

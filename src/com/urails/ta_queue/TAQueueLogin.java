@@ -67,7 +67,6 @@ public class TAQueueLogin extends Activity {
 		_progress.setVisibility(8);
 
 		_studentRadio.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				_passwordEdit.setVisibility(8);
@@ -76,7 +75,6 @@ public class TAQueueLogin extends Activity {
 		});
 		
 		_taRadio.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				_passwordEdit.setVisibility(0);
@@ -85,7 +83,6 @@ public class TAQueueLogin extends Activity {
 		});
 		
 		_loginButton.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				_username = _usernameEdit.getText().toString();
@@ -116,12 +113,13 @@ public class TAQueueLogin extends Activity {
 			case 2:
 				_queues = (ArrayList<QueueItem>)getIntent().getExtras().get(QUEUES);
 				_queue = (QueueItem)getIntent().getExtras().get(LOGIN);
-				_username = null;
-				_password = null;
-				_location = null;
 				_usernameEdit.setText("");
 				_locationEdit.setText("");
 				_passwordEdit.setText("");
+				_username = _usernameEdit.getText().toString();
+				_password = _passwordEdit.getText().toString();
+				_location = _locationEdit.getText().toString();
+    			_progress.setVisibility(8);
 				break;
 	      default:
 	        break;	
@@ -129,7 +127,6 @@ public class TAQueueLogin extends Activity {
 	}
 	private void taLogin()
 	{
-		
 		_password = _passwordEdit.getText().toString();
 		_text = "Password is empty!";
 		_url = _queue._loginurl+"/tas";
@@ -146,6 +143,8 @@ public class TAQueueLogin extends Activity {
 					try{
 						Gson gson = new Gson();
 	            		_ta = (TA) gson.fromJson(result.toString(), TA.class);
+	            		_loginButton.setClickable(true);
+		    			_progress.setVisibility(8);
 	            		Intent intent = new Intent();
 	        			intent.setClass(TAQueueLogin.this, TAQueueTaInfo.class);
 	        			intent.putExtra(TAQueueTaInfo.USER, _ta);
@@ -155,24 +154,41 @@ public class TAQueueLogin extends Activity {
 					}
 					catch(Exception e)
 					{
-						System.out.println("ERROR TA LOGIN" + e.toString());
+						System.out.println("ERROR Exception TA LOGIN" + e.toString());
 						Intent intent = new Intent();
+						_loginButton.setClickable(true);
+		    			_progress.setVisibility(8);
 						intent.setClass(TAQueueLogin.this, TAQueueMain.class);
 	        			setResult((int)2, intent);
 	        			finish();
 					}
-					_loginButton.setClickable(true);
-					_progress.setVisibility(8);
 				}
 				
 				@Override
 				public void onFailure(Throwable arg0, String arg1) {
-					System.out.println("ERROR STring" + arg1);
+					System.out.println("ERROR Fail TA LOGIn" + arg1);
 		           	super.onFailure(arg0, arg1);
-		           	Intent intent = new Intent();
-        			intent.setClass(TAQueueLogin.this, TAQueueMain.class);
-        			setResult((int)2, intent);
-        			finish();
+		           	if(arg1.contains("authorized"))
+		           	{
+		           		_text = "Wrong Password";
+		           		Toast.makeText(_context, _text, _duration).show();
+		    			_loginButton.setClickable(true);
+		    			_usernameEdit.setText("");
+						_locationEdit.setText("");
+						_passwordEdit.setText("");
+						_username = _usernameEdit.getText().toString();
+						_password = _passwordEdit.getText().toString();
+						_location = _locationEdit.getText().toString();
+						_loginButton.setClickable(true);
+		    			_progress.setVisibility(8);
+		           	}
+		           	else
+		           	{
+		           		Intent intent = new Intent();
+		           		intent.setClass(TAQueueLogin.this, TAQueueMain.class);
+		           		setResult((int)2, intent);
+		           		finish();
+		           	}
 				}
 
 			});
