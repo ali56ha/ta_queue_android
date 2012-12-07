@@ -1,7 +1,7 @@
 lt application files
 *.apk
 *.ap_
-
+*.DS_Store
 # files for the dex VM
 *.dex
 

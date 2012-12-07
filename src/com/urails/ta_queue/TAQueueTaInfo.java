@@ -161,13 +161,13 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 	        public void onFailure(Throwable arg0, JSONObject arg1) {
 	        	System.out.println("ERROR SETLOGOUT" + arg1.toString());
 	           	super.onFailure(arg0, arg1);
-//	           	Intent intent = new Intent();
-//				intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
-//				intent.putExtra(TAQueueLogin.LOGIN, _queue);
-//				intent.putExtra(TAQueueLogin.QUEUES, _queues);
-//				setResult((int)2, intent);
-//				finish();
-	           	setLogout();
+	           	Intent intent = new Intent();
+				intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
+				intent.putExtra(TAQueueLogin.LOGIN, _queue);
+				intent.putExtra(TAQueueLogin.QUEUES, _queues);
+				setResult((int)2, intent);
+				finish();
+//	           	setLogout();
 	        }
 		});
 	}
