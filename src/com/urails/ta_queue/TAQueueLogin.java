@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -100,6 +101,17 @@ public class TAQueueLogin extends Activity {
 			}
 		});
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+	    if ((keyCode == KeyEvent.KEYCODE_BACK))
+	    {
+	        finish();
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -170,7 +182,7 @@ public class TAQueueLogin extends Activity {
 		           	super.onFailure(arg0, arg1);
 		           	if(arg1.contains("authorized"))
 		           	{
-		           		_text = "Wrong Password";
+		           		_text = "Wrong Password or Server Error Please try again";
 		           		Toast.makeText(_context, _text, _duration).show();
 		    			_loginButton.setClickable(true);
 		    			_usernameEdit.setText("");

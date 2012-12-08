@@ -2,6 +2,7 @@ package com.urails.ta_queue.model;
 
 import org.apache.http.Header;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.methods.HttpGet;
 
 import org.apache.http.impl.auth.BasicScheme;
 
@@ -55,9 +56,10 @@ public class TaQueueConnectorHttp {
 	}
 	
 	public void put(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+		System.out.println("PUT CALL");
 	    client.put(getAbsoluteUrl(url), params, responseHandler);
 	}
-
+	
 	public void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 		System.out.println("POST CALL");
 	    client.post(getAbsoluteUrl(url), params, responseHandler);
@@ -97,5 +99,4 @@ public class TaQueueConnectorHttp {
 	      return BASE_URL + relativeUrl;
 	}
 
-	
 }

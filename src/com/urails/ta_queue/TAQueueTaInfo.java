@@ -1,5 +1,6 @@
 package com.urails.ta_queue;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
@@ -17,6 +18,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -124,13 +127,23 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 		_buttonforzen.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				setFrozen();
+				try{
+					setFrozen();
+				}catch(IOException e)
+				{
+					System.out.println("IOException setActivate" + e.getMessage().toString());
+				}
 			}
 		});
 		_buttonactive.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				setActive();
+				try{
+					setActive();
+				}catch(IOException e)
+				{
+					System.out.println("IOException setActivate" + e.getMessage().toString());
+				}
 			}
 		});
 		_logout.setOnClickListener(new OnClickListener(){
@@ -139,6 +152,17 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 				setLogout();
 			}
 		});
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+	    if ((keyCode == KeyEvent.KEYCODE_BACK))
+	    {
+	    	setLogout();
+	        finish();
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
 	
 	private void setLogout()
@@ -151,6 +175,8 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 			public void onSuccess(JSONObject result) {
 				super.onSuccess(result);
 				Intent intent = new Intent();
+				_progress.setVisibility(0);
+				getQueueInfo();
 				intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
 				intent.putExtra(TAQueueLogin.LOGIN, _queue);
 				intent.putExtra(TAQueueLogin.QUEUES, _queues);
@@ -161,6 +187,8 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 	        public void onFailure(Throwable arg0, JSONObject arg1) {
 	        	System.out.println("ERROR SETLOGOUT" + arg1.toString());
 	           	super.onFailure(arg0, arg1);
+	           	_progress.setVisibility(0);
+	    		getQueueInfo();
 	           	Intent intent = new Intent();
 				intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
 				intent.putExtra(TAQueueLogin.LOGIN, _queue);
@@ -172,69 +200,88 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 		});
 	}
 	
-	private void setFrozen(){
+	private void setFrozen() throws IOException{
 		_progress.setVisibility(0);
 		_params = new RequestParams();
-		String bool = "true";
-		if(_frozen)
-			bool = "false";
-		_params.put("queue[frozen]", bool);
+		//String bool = "true";
+		//if(_frozen)
+		//	bool = "false";
+		_params.put("queue[frozen]", Boolean.toString(!_frozen));
 		_connector.setAuth(_ta.id, _ta.token);
-		_connector.get("/queue", _params, new JsonHttpResponseHandler(){
-			@Override
-			public void onSuccess(JSONObject result) {
-				super.onSuccess(result);
-				System.out.println("Frozen QQQ " + result.toString());
-				getQueueInfo();
-			}
-			@Override
-	        public void onFailure(Throwable arg0, JSONObject arg1) {
-	        	System.out.println("ERROR setLogout" + arg1.toString());
-	           	super.onFailure(arg0, arg1);
-	           	setLogout();
-//	           	Intent intent = new Intent();
-//	           	intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
-//				intent.putExtra(TAQueueLogin.LOGIN, _queue);
-//				intent.putExtra(TAQueueLogin.QUEUES, _queues);
-//				setResult((int)2, intent);
-//				finish();
-	        }
-		});
+		try{
+			_connector.get("/queue", _params, new JsonHttpResponseHandler(){
+				@Override
+				public void onSuccess(JSONObject result) {
+					super.onSuccess(result);
+					System.out.println("Frozen QQQ " + result.toString());
+					getQueueInfo();
+				}
+				@Override
+		        public void onFailure(Throwable arg0, JSONObject arg1) {
+		        	System.out.println("ERROR setfrozen" + arg1.toString());
+		           	super.onFailure(arg0, arg1);
+		           	getQueueInfo();
+		           	//setLogout();
+	//	           	Intent intent = new Intent();
+	//	           	intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
+	//				intent.putExtra(TAQueueLogin.LOGIN, _queue);
+	//				intent.putExtra(TAQueueLogin.QUEUES, _queues);
+	//				setResult((int)2, intent);
+	//				finish();
+		        }
+			});
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception SetFroze" + e.toString());
+			getQueueInfo();
+		}
 	}
 	
-	private void setActive(){
+	private void setActive() throws IOException{
 		_progress.setVisibility(0);
 		_params = new RequestParams();
-		String active = "true";
-		if(_active)
-			active = "false";
-		_params.put("queue[active]", active);
+//		String active = "true";
+//		if(_active)
+//			active = "false";
+		System.out.println("SETACTIVE");
+		_params.put("queue[active]", Boolean.toString(!_active));
+		IOException ioe = null;
 		_connector.addAuthHeader(_ta.id, _ta.token);
-		_connector.put("/queue", _params, new JsonHttpResponseHandler(){
-			@Override
-			public void onSuccess(JSONObject result) {
-				super.onSuccess(result);
-				System.out.println("Active QQQ " + result.toString());
-				getQueueInfo();
-			}
-			
-			@Override
-	        public void onFailure(Throwable arg0, JSONObject arg1) {
-	        	System.out.println("ERROR SetActive" + arg1.toString());
-	           	super.onFailure(arg0, arg1);
-	    		_progress.setVisibility(8);
-//	    		Intent intent = new Intent();
-//	    		intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
-//				intent.putExtra(TAQueueLogin.LOGIN, _queue);
-//				intent.putExtra(TAQueueLogin.QUEUES, _queues);
-//				setResult((int)2, intent);
-//				finish();
-	    		setLogout();
-	        }
-		});
+		try{
+			_connector.put("/queue", _params, new JsonHttpResponseHandler(){
+				@Override
+				public void onSuccess(JSONObject result) {
+					super.onSuccess(result);
+					System.out.println("Active QQQ " + result.toString());
+					getQueueInfo();
+				}
+				
+				@Override
+		        public void onFailure(Throwable arg0, JSONObject arg1) {
+		        	System.out.println("ERROR SetActive" + arg1.toString());
+		           	super.onFailure(arg0, arg1);
+		    		_progress.setVisibility(8);
+	//	    		Intent intent = new Intent();
+	//	    		intent.setClass(TAQueueTaInfo.this, TAQueueLogin.class);
+	//				intent.putExtra(TAQueueLogin.LOGIN, _queue);
+	//				intent.putExtra(TAQueueLogin.QUEUES, _queues);
+	//				setResult((int)2, intent);
+	//				finish();
+		    		setLogout();
+		        }
+			});
+		}catch(Exception e)
+		{
+			System.out.println("Exception SetActive" + e.toString());
+			getQueueInfo();
+		}
+		_progress.setVisibility(0);
+		getQueueInfo();
 	}
 	
 	private void acceptQueue(){
+		System.out.println("ACCEPT");
 		_progress.setVisibility(0);
 		_params = new RequestParams();
 		String url = "/students/"+_studentIDs.get(_studentIndex)+"/ta_accept";
@@ -247,7 +294,7 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 			}
 			@Override
 	        public void onFailure(Throwable arg0, JSONObject arg1) {
-	        	System.out.println("ERROR " + arg1.toString());
+	        	System.out.println("ERROR Accept " + arg1.toString());
 	           	super.onFailure(arg0, arg1);
 	           	getQueueInfo();
 	    		_progress.setVisibility(8);
@@ -266,6 +313,7 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 	
 	private void removeQueue()
 	{
+		System.out.println("REMOVE");
 		_progress.setVisibility(0);
 		_params = new RequestParams();
 		String url = "/students/"+_currentstudentid+"/ta_remove";
@@ -279,7 +327,7 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 			}
 			@Override
 	        public void onFailure(Throwable arg0, JSONObject arg1) {
-	        	System.out.println("ERROR " + arg1.toString());
+	        	System.out.println("ERROR REmove " + arg1.toString());
 	           	super.onFailure(arg0, arg1);
 	    		getQueueInfo();
 	    		_text = "ERROR Your login might be timeout. Please Login again";
@@ -297,6 +345,7 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 	}
 	
 	private void putbackQueue(){
+		System.out.println("PUTBACK");
 		_progress.setVisibility(0);
 		_params = new RequestParams();
 		String url = "/students/"+_currentstudentid+"/ta_putback";
@@ -310,7 +359,7 @@ public class TAQueueTaInfo extends Activity implements ListAdapter{
 			}
 			@Override
 	        public void onFailure(Throwable arg0, JSONObject arg1) {
-	        	System.out.println("ERROR " + arg1.toString());
+	        	System.out.println("ERROR Putback" + arg1.toString());
 	           	super.onFailure(arg0, arg1);
 	           	_text = "ERROR Your login might be timeout. Please Login again";
 				Toast.makeText(_context, _text, _duration).show();

@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -119,7 +120,6 @@ public class TAQueueInfo extends Activity implements ListAdapter{
 	        public void onFailure(Throwable arg0, JSONObject arg1) {
 	        	System.out.println("ERROR SetLogout" + arg1.toString());
 	           	super.onFailure(arg0, arg1);
-	           	System.out.println("ERROR LOL");
 	           	Intent intent = new Intent();
 				intent.putExtra(TAQueueLogin.LOGIN, _queue);
 				intent.putExtra(TAQueueLogin.QUEUES, _queues);
@@ -127,6 +127,17 @@ public class TAQueueInfo extends Activity implements ListAdapter{
 				finish();	        
 			}
 		});
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+	    if ((keyCode == KeyEvent.KEYCODE_BACK))
+	    {
+	    	setLogout();
+	        finish();
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
 	
 	private void enterQueue(){
@@ -143,11 +154,12 @@ public class TAQueueInfo extends Activity implements ListAdapter{
 	        public void onFailure(Throwable arg0, String arg1) {
 	        	System.out.println("ERROR " + arg1);
 	           	super.onFailure(arg0, arg1);
-	           	Intent intent = new Intent();
-	           	intent.putExtra(TAQueueLogin.LOGIN, _queue);
-				intent.putExtra(TAQueueLogin.QUEUES, _queues);
-				setResult((int)2, intent);
-				finish();
+	           	setLogout();
+//	           	Intent intent = new Intent();
+//	           	intent.putExtra(TAQueueLogin.LOGIN, _queue);
+//				intent.putExtra(TAQueueLogin.QUEUES, _queues);
+//				setResult((int)2, intent);
+//				finish();
 	        }
 		});
 	}
@@ -167,11 +179,12 @@ public class TAQueueInfo extends Activity implements ListAdapter{
 	        public void onFailure(Throwable arg0, String arg1) {
 	        	System.out.println("ERROR String " + arg1);
 	           	super.onFailure(arg0, arg1);
-	           	Intent intent = new Intent();
-	           	intent.putExtra(TAQueueLogin.LOGIN, _queue);
-				intent.putExtra(TAQueueLogin.QUEUES, _queues);
-				setResult((int)2, intent);
-				finish();
+	           	setLogout();
+//	           	Intent intent = new Intent();
+//	           	intent.putExtra(TAQueueLogin.LOGIN, _queue);
+//				intent.putExtra(TAQueueLogin.QUEUES, _queues);
+//				setResult((int)2, intent);
+//				finish();
 	        }
 		});
 	}
@@ -182,7 +195,6 @@ public class TAQueueInfo extends Activity implements ListAdapter{
 		_students = new ArrayList<String>();
 		_params = new RequestParams();
 		_connector.setAuthget(_student.id, _student.token,"/queue", _params, new JsonHttpResponseHandler(){
-			
 			@Override
 			public void onSuccess(JSONObject result) {
 				super.onSuccess(result);
@@ -195,23 +207,25 @@ public class TAQueueInfo extends Activity implements ListAdapter{
 				}
 				catch(Exception e)
 				{
-					System.out.println("ERROR " + e);
-					Intent intent = new Intent();
-		           	intent.putExtra(TAQueueLogin.LOGIN, _queue);
-					intent.putExtra(TAQueueLogin.QUEUES, _queues);
-					setResult((int)2, intent);
-					finish();
+					System.out.println("ERROR GetQueueInfo" + e);
+					setLogout();
+//					Intent intent = new Intent();
+//		           	intent.putExtra(TAQueueLogin.LOGIN, _queue);
+//					intent.putExtra(TAQueueLogin.QUEUES, _queues);
+//					setResult((int)2, intent);
+//					finish();
 				}
 			}
 			@Override
 	        public void onFailure(Throwable arg0, String arg1) {
-	        	System.out.println("ERROR " + arg1);
+	        	System.out.println("ERROR GetQueueInfo Fails" + arg1);
 	           	super.onFailure(arg0, arg1);
-	           	Intent intent = new Intent();
-	           	intent.putExtra(TAQueueLogin.LOGIN, _queue);
-				intent.putExtra(TAQueueLogin.QUEUES, _queues);
-				setResult((int)2, intent);
-				finish();
+	           	setLogout();
+//	           	Intent intent = new Intent();
+//	           	intent.putExtra(TAQueueLogin.LOGIN, _queue);
+//				intent.putExtra(TAQueueLogin.QUEUES, _queues);
+//				setResult((int)2, intent);
+//				finish();
 	        }
 		});
 	}
@@ -222,11 +236,12 @@ public class TAQueueInfo extends Activity implements ListAdapter{
 		{
 			_text = "ERROR Your login might be timeout. Please Login again";
 			Toast.makeText(_context, _text, _duration).show();
-			Intent intent = new Intent();
-			intent.putExtra(TAQueueLogin.LOGIN, _queue);
-			intent.putExtra(TAQueueLogin.QUEUES, _queues);
-			setResult((int)1, intent);
-			finish();
+			setLogout();
+//			Intent intent = new Intent();
+//			intent.putExtra(TAQueueLogin.LOGIN, _queue);
+//			intent.putExtra(TAQueueLogin.QUEUES, _queues);
+//			setResult((int)1, intent);
+//			finish();
 		}
 		int tacount = _queueinfo.tas.length;
 		int scount = _queueinfo.students.length;
